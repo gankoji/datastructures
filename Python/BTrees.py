@@ -46,7 +46,7 @@ class BNode:
 if unitTests:
     testNode = BNode()
     testNode.keys = [1, 2, 3, 4, 5, 6]
-    testNode.children = (len(testNode.keys)+1)*[1]
+    testNode.children = (len(testNode.keys)+1)*[BNode()]
 
     if testNode.lowerBound(4) == 4:
         print("Success")
