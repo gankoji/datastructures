@@ -25,6 +25,63 @@ void printArray(int * arr, int len) {
     printf("]\n");
 }
 
+// Basic mergesort
+int * mergeSort(int * arr, int len) {
+    printf("MergeSort called on %d els. \n",len);
+    if (len <= 1) {
+        return arr;
+    }
+
+    // Split the array in two
+    int halflen = len/2;
+    int *a, *b;
+    a = (int *)malloc(sizeof(int)*halflen);
+    b = (int *)malloc(sizeof(int)*(len-halflen));
+    if ((a == NULL) || (b == NULL)) {
+        printf("ERROR: couldn't malloc.\n");
+        return NULL;
+    }
+
+    for (int i=0; i<halflen; i++) {
+        a[i] = arr[i];
+    }
+
+    for (int i=halflen; i<len; i++) {
+        b[i-halflen] = arr[i];
+    }
+
+
+    // Recurse on halves
+    int * asorted = mergeSort(a, halflen);
+    int * bsorted = mergeSort(b, (len-halflen));
+
+    // Merge sorted halves
+    int * output = (int *)malloc(sizeof(int)*len);
+    if (output == NULL) {
+        printf("ERROR: couldn't malloc output.\n");
+        return NULL;
+    }
+    int i=0, j=0, k=0;
+    while (k < len) {
+        if ((i < (halflen)) && (j < (len - halflen))) {
+            if (asorted[i] <= bsorted[j]) {
+                output[k] = asorted[i];
+                i++; k++;
+            } else {
+                output[k] = bsorted[j];
+                j++; k++;
+            }
+        } else if (i < (halflen)) {
+            output[k] = asorted[i];
+            i++; k++;
+        } else {
+            output[k] = bsorted[j];
+            j++; k++;
+        }
+    }
+
+    return output;
+}
 int main(int argc, char ** argv) {
 
     // First, build some test data
@@ -38,11 +95,12 @@ int main(int argc, char ** argv) {
     printArray(a,5);
 
     // Call sorting function
-
+    int * asorted;
+    asorted = mergeSort(a, 5);
     // Print ending array
-    printArray(a,5);
+    printArray(asorted,5);
 
     // Check that our sorting routine has correctly sorted 
-    printf("isSorted: %s\n", isSorted(a,5)? "True":"False");
+    printf("isSorted: %s\n", isSorted(asorted,5)? "True":"False");
     return 1;
 }
