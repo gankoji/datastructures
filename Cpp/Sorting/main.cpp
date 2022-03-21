@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <execinfo.h>
+#include <signal.h>
+#include <unistd.h>
+#include <vector>
+#include <iostream>
 using namespace std;
 
 // Sorting - main.cpp
@@ -7,99 +12,100 @@ using namespace std;
 // Mostly to show that I can still do it in C++. This file 
 // simply runs the tests to show that they work!
 
-// This is the C way to do it. Refactor later for std::vector, and 
-// use iterators to avoid this messiness with having to know the length
-bool isSorted(int * arr, int len) {
+bool isSorted(vector<int> arr) {
+    int len = arr.size();
     for (int i=1; i<len; i++) {
         if (arr[i-1] > arr[i]) return false;
     }
     return true;
 }
 
-// A pretty print for our arrays
-void printArray(int * arr, int len) {
-    printf("[");
-    for (int i=0; i<len; i++) {
-        printf("%d,", arr[i]);
+void printVector(vector<int> v) {
+    cout << "v = { ";
+    for (int n : v) {
+        cout << n << ", ";
     }
-    printf("]\n");
+    cout << "}; \n";
 }
 
 // Basic mergesort
-int * mergeSort(int * arr, int len) {
+vector<int> mergeSort(vector<int> arr) {
     // Check the base case, a 1 element array is vacuously sorted 
+    int len = arr.size();
     if (len <= 1) {
         return arr;
     }
 
     // Split the array in two
     int halflen = len/2;
-    int *a, *b;
-    a = (int *)malloc(sizeof(int)*halflen);
-    b = (int *)malloc(sizeof(int)*(len-halflen));
-    if ((a == NULL) || (b == NULL)) {
-        printf("ERROR: couldn't malloc.\n");
-        return NULL;
-    }
+    vector<int> a, b;
 
     for (int i=0; i<halflen; i++) {
-        a[i] = arr[i];
+        a.push_back(arr.at(i));
     }
 
     for (int i=halflen; i<len; i++) {
-        b[i-halflen] = arr[i];
+        b.push_back(arr.at(i));
     }
-
 
     // Recurse on halves
-    int * asorted = mergeSort(a, halflen);
-    int * bsorted = mergeSort(b, (len-halflen));
+    vector<int> asorted = mergeSort(a);
+    vector<int> bsorted = mergeSort(b);
 
     // Merge sorted halves
-    int * output = (int *)malloc(sizeof(int)*len);
-    if (output == NULL) {
-        printf("ERROR: couldn't malloc output.\n");
-        return NULL;
-    }
+    vector<int> output;
     int i=0, j=0, k=0;
     while (k < len) {
         if ((i < (halflen)) && (j < (len - halflen))) {
             if (asorted[i] <= bsorted[j]) {
-                output[k] = asorted[i];
+                output.push_back(asorted[i]);
                 i++; k++;
             } else {
-                output[k] = bsorted[j];
+                output.push_back(bsorted[j]);
                 j++; k++;
             }
         } else if (i < (halflen)) {
-            output[k] = asorted[i];
+            output.push_back(asorted[i]);
             i++; k++;
         } else {
-            output[k] = bsorted[j];
+            output.push_back(bsorted[j]);
             j++; k++;
         }
     }
 
-    free(asorted);
-    free(bsorted);
     return output;
 }
+
+void handler(int sig) {
+    void *array[10];
+    size_t size;
+
+    // get void*'s for all entries on the stack
+    size = backtrace(array, 10);
+
+    // print out all the frames to stderr
+    fprintf(stderr, "Error: signal %d:\n", sig);
+    backtrace_symbols_fd(array, size, STDERR_FILENO);
+    exit(1);
+}
+
 int main(int argc, char ** argv) {
 
+    signal(SIGSEGV, handler);
     // First, build some test data
     int arrSize = (int)1e8;
-    int * a = (int *)malloc(sizeof(int)*arrSize);
+    vector<int> a;
 
     for (int i=0; i<arrSize; i++) {
-        a[i] = rand()%20000;
+        a.push_back(rand()%20000);
     }
 
     // Call sorting function
-    int * asorted;
-    asorted = mergeSort(a,arrSize);
+    vector<int> asorted;
+    asorted = mergeSort(a);
 
     // Check that our sorting routine has correctly sorted 
     printf("Testing MergeSort on an array with %d elements.\n", arrSize);
-    printf("isSorted: %s\n", isSorted(asorted,arrSize)? "True":"False");
+    printf("isSorted: %s\n", isSorted(asorted)? "True":"False");
     return 1;
 }
