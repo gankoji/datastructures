@@ -51,7 +51,7 @@ int main(int argc, char ** argv) {
     }
 
     // Check that our sorting routine has correctly sorted 
-    printf("Testing MergeSort on an array with %d elements via %s.\n", arrSize, doQuickSort?"Quicksort":"Mergesort");
+    printf("Testing sort on an array with %d elements via %s.\n", arrSize, doQuickSort?"Quicksort":"Mergesort");
     printf("isSorted: %s\n", isSorted(asorted)? "True":"False");
     return 1;
 }
