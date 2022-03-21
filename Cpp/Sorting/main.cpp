@@ -27,7 +27,7 @@ void printArray(int * arr, int len) {
 
 // Basic mergesort
 int * mergeSort(int * arr, int len) {
-    printf("MergeSort called on %d els. \n",len);
+    // Check the base case, a 1 element array is vacuously sorted 
     if (len <= 1) {
         return arr;
     }
@@ -80,27 +80,26 @@ int * mergeSort(int * arr, int len) {
         }
     }
 
+    free(asorted);
+    free(bsorted);
     return output;
 }
 int main(int argc, char ** argv) {
 
     // First, build some test data
-    int a[5];
+    int arrSize = (int)1e8;
+    int * a = (int *)malloc(sizeof(int)*arrSize);
 
-    for (int i=0; i<5; i++) {
-        a[i] = 5-i;
+    for (int i=0; i<arrSize; i++) {
+        a[i] = rand()%20000;
     }
-
-    // Print starting array
-    printArray(a,5);
 
     // Call sorting function
     int * asorted;
-    asorted = mergeSort(a, 5);
-    // Print ending array
-    printArray(asorted,5);
+    asorted = mergeSort(a,arrSize);
 
     // Check that our sorting routine has correctly sorted 
-    printf("isSorted: %s\n", isSorted(asorted,5)? "True":"False");
+    printf("Testing MergeSort on an array with %d elements.\n", arrSize);
+    printf("isSorted: %s\n", isSorted(asorted,arrSize)? "True":"False");
     return 1;
 }
