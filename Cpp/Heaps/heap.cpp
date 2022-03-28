@@ -1,7 +1,8 @@
 #include "heap.h"
 
 heap::heap(int * arr, int n) {
-    _arr = new int;
+    _arr = new int[2*n];
+    capacity = 2*n;
     std::copy(arr, arr + n, _arr);
     this->n = n;
 
@@ -45,4 +46,69 @@ void heap::printHeap() {
         std::cout << _arr[i] << ", ";
     }
     std::cout << _arr[n-1] << "];\n";
+}
+
+void heap::ensureCapacity() {
+    if (n == capacity) {
+        // We've run out of room, make more
+        int * temp = new int[2*capacity];
+        for (int i=0; i<n; i++) {
+            temp[i] = _arr[i];
+        }
+        _arr = temp;
+        capacity *= 2;
+    }
+}
+
+void heap::push(int el) {
+    ensureCapacity();
+    _arr[n] = el;
+    n++;
+    heapifyUp();
+}
+
+void heap::heapifyUp() {
+    int index = n-1;
+    while (hasParent(index) && parent(index) < _arr[index]) {
+        swap(getParentIndex(index), index);
+        index = getParentIndex(index);
+    }
+}
+
+void heap::heapifyDown() {
+    int index = 0;
+    while (hasLeftChild(index)) {
+        int largerChildIndex = getLeftChildIndex(index);
+        if (hasRightChild(index) && rightChild(index) > leftChild(index)) {
+            largerChildIndex = getRightChildIndex(index);
+        }
+
+        if (_arr[index] > _arr[largerChildIndex]) {
+            break;
+        } else {
+            swap(index, largerChildIndex);
+        }
+
+        index = largerChildIndex;
+    }
+}
+
+int heap::peek() {
+    if (n == 0) {
+        return -1;
+    }
+
+    return _arr[0];
+}
+
+int heap::pop() {
+    if (n==0) {
+        return -1;
+    }
+
+    int item = _arr[0];
+    _arr[0] = _arr[n-1];
+    n--;
+    heapifyDown();
+    return item;
 }
