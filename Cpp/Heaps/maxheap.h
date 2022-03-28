@@ -1,15 +1,15 @@
 #include <algorithm>
 #include <iostream>
 
-class heap {
+class maxheap {
     public:
-        heap(int* arr, int size);
-        void heapify(int rootIdx);
+        maxheap(int* arr, int size);
+        void maxheapify(int rootIdx);
         int pop();
         int peek();
         void push(int el);
-        void heapsort();
-        void printHeap();
+        void maxheapsort();
+        void printmaxheap();
 
     private:
         int n;
@@ -18,8 +18,8 @@ class heap {
 
         void swap(int a, int b);
         void ensureCapacity();
-        void heapifyDown();
-        void heapifyUp();
+        void maxheapifyDown();
+        void maxheapifyUp();
 
         int getLeftChildIndex(int parentIndex) { return 2*parentIndex + 1; };
         int getRightChildIndex(int parentIndex) { return 2*parentIndex + 2; };

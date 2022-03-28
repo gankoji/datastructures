@@ -1,23 +1,23 @@
-#include "heap.h"
+#include "maxheap.h"
 
-heap::heap(int * arr, int n) {
+maxheap::maxheap(int * arr, int n) {
     _arr = new int[2*n];
     capacity = 2*n;
     std::copy(arr, arr + n, _arr);
     this->n = n;
 
-    // Build heap (rearrange array)
+    // Build maxheap (rearrange array)
     for (int i = n / 2 - 1; i >= 0; i--)
-        heapify(i);
+        maxheapify(i);
 }
 
-void heap::swap(int a, int b) {
+void maxheap::swap(int a, int b) {
     int temp = _arr[a];
     _arr[a] = _arr[b];
     _arr[b] = temp;
 }
 
-void heap::heapify(int rootIdx) {
+void maxheap::maxheapify(int rootIdx) {
     int largest = rootIdx; // Initialize largest as root
     int l = 2 * rootIdx + 1;
     int r = 2 * rootIdx + 2;
@@ -34,21 +34,21 @@ void heap::heapify(int rootIdx) {
     if (largest != rootIdx) {
         swap(rootIdx, largest);
 
-        // Recursively heapify the affected sub-tree
-        heapify(largest);
+        // Recursively maxheapify the affected sub-tree
+        maxheapify(largest);
     }
 }
 
-void heap::printHeap() {
+void maxheap::printmaxheap() {
     std::cout << "Internal array: [";
-    //printf("Here in printheap\n");
+    //printf("Here in printmaxheap\n");
     for (int i=0; i<n-1; i++) {
         std::cout << _arr[i] << ", ";
     }
     std::cout << _arr[n-1] << "];\n";
 }
 
-void heap::ensureCapacity() {
+void maxheap::ensureCapacity() {
     if (n == capacity) {
         // We've run out of room, make more
         int * temp = new int[2*capacity];
@@ -60,14 +60,14 @@ void heap::ensureCapacity() {
     }
 }
 
-void heap::push(int el) {
+void maxheap::push(int el) {
     ensureCapacity();
     _arr[n] = el;
     n++;
-    heapifyUp();
+    maxheapifyUp();
 }
 
-void heap::heapifyUp() {
+void maxheap::maxheapifyUp() {
     int index = n-1;
     while (hasParent(index) && parent(index) < _arr[index]) {
         swap(getParentIndex(index), index);
@@ -75,7 +75,7 @@ void heap::heapifyUp() {
     }
 }
 
-void heap::heapifyDown() {
+void maxheap::maxheapifyDown() {
     int index = 0;
     while (hasLeftChild(index)) {
         int largerChildIndex = getLeftChildIndex(index);
@@ -93,7 +93,7 @@ void heap::heapifyDown() {
     }
 }
 
-int heap::peek() {
+int maxheap::peek() {
     if (n == 0) {
         return -1;
     }
@@ -101,7 +101,7 @@ int heap::peek() {
     return _arr[0];
 }
 
-int heap::pop() {
+int maxheap::pop() {
     if (n==0) {
         return -1;
     }
@@ -109,6 +109,6 @@ int heap::pop() {
     int item = _arr[0];
     _arr[0] = _arr[n-1];
     n--;
-    heapifyDown();
+    maxheapifyDown();
     return item;
 }
