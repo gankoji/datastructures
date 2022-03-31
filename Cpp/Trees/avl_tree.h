@@ -1,3 +1,6 @@
+#ifndef AVL_TREE
+#define AVL_TREE
+
 #include <iostream>
 using namespace std;
 
@@ -8,15 +11,11 @@ struct AVLNode {
     int height;
 
     AVLNode( const int & theElement, AVLNode *lt, AVLNode *rt, int h = 0)
-        : element{ theElement }, left{ lt }, right{ rt }, height{h} {}
+        : element{theElement}, left{lt}, right{rt}, height{h} {}
 
     AVLNode( int && theElement, AVLNode *lt, AVLNode *rt, int h=0)
         : element{std::move(theElement)}, left{lt}, right{rt}, height{h} {}
 };
-
-int height(AVLNode *t) {
-    return (t == nullptr)? -1 : t->height;
-}
 
 class AVLTree {
     public:
@@ -55,8 +54,11 @@ class AVLTree {
 
         bool contains(const int & x, AVLNode *t) const;
 
+        int height(AVLNode * t);
         AVLNode * findMin( AVLNode *t) const;
         AVLNode * findMax(AVLNode *t) const;
         AVLNode * clone(AVLNode *t) const;
 
 };
+
+#endif //AVL_TREE

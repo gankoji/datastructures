@@ -51,8 +51,16 @@ bool AVLTree::contains(const int & x, AVLNode *t) const {
         return true;
 }
 
+int AVLTree::height(AVLNode *t) {
+    return (t == nullptr)? -1 : t->height;
+}
+
 void AVLTree::insert(const int & x) {
     insert(x, root);
+}
+
+void AVLTree::insert(int && x) {
+    insert(std::move(x), root);
 }
 
 void AVLTree::insert(const int & x, AVLNode * & t) {
@@ -103,6 +111,22 @@ void AVLTree::remove(const int & x, AVLNode * & t) {
     }
 
     balance(t);
+}
+
+void AVLTree::printTree(ostream & out) const {
+    out << "Printing AVL tree in-order.\n";
+    printTree(root, out);
+    out << "\n";
+}
+
+void AVLTree::printTree(AVLNode *t, ostream & out) const {
+    if (t == nullptr)
+        return;
+    else {
+        printTree(t->left, out);
+        out << " " << t->element << ",";
+        printTree(t->right, out);
+    }
 }
 
 AVLNode * AVLTree::findMin(AVLNode *t) const {
