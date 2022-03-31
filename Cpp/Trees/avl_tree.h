@@ -3,9 +3,9 @@ using namespace std;
 
 struct AVLNode {
     int element;
-    int height;
     AVLNode *left;
     AVLNode *right;
+    int height;
 
     AVLNode( const int & theElement, AVLNode *lt, AVLNode *rt, int h = 0)
         : element{ theElement }, left{ lt }, right{ rt }, height{h} {}
