@@ -56,11 +56,22 @@ int AVLTree::height(AVLNode *t) {
 }
 
 void AVLTree::insert(const int & x) {
+    cout << "\nTree before insert of " << x << "\n";
+    printTree();
+
     insert(x, root);
+
+    cout << "Tree after insert, with balance.\n";
+    printTree();
 }
 
 void AVLTree::insert(int && x) {
+    cout << "\nTree before insert of " << x << "\n";
+    printTree();
     insert(std::move(x), root);
+
+    cout << "Tree after insert, with balance.\n";
+    printTree();
 }
 
 void AVLTree::insert(const int & x, AVLNode * & t) {
@@ -72,6 +83,7 @@ void AVLTree::insert(const int & x, AVLNode * & t) {
         insert(x, t->right);
     else
         ;
+
 
     balance(t);
 }

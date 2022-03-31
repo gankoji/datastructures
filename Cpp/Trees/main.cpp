@@ -35,7 +35,7 @@ int main(int argc, char ** argv) {
     avl->insert(5);
     tests[6] = avl->contains(5);
 
-    avl->printTree();
+    //avl->printTree();
 
     // Test insertion
     for (int i=0; i<5; i++) {
@@ -43,7 +43,7 @@ int main(int argc, char ** argv) {
         tests[i+7] = avl->contains(arr[i]);
     }
 
-    avl->printTree();
+    //avl->printTree();
 
     // Accumulate and print test results
     printf("Test results\n");

@@ -23,5 +23,5 @@ avl_tree.o:
 clean:
 	$(RM) trees.out main.o bst_node.o avl_tree.o
 
-test: all
+test: clean all
 	./trees.out
