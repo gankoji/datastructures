@@ -16,15 +16,18 @@ class Trie {
         ~Trie();
 
         void insert(string key);
-        void remove(string key);
         bool search(string key);
         bool isEmpty(TrieNode* root);
 
+        TrieNode* remove(string key);
+
     private:
+        TrieNode *root;
         struct TrieNode *createNode(void);
+        void makeEmpty(TrieNode *t);
         void insert(struct TrieNode *root, string key);
         bool search(struct TrieNode *root, string key);
-        TrieNode* deletion(TrieNode* root, string key, int depth = 0);
+        TrieNode* remove(TrieNode* root, string key, int depth = 0);
 };
 
 #endif //TRIES
