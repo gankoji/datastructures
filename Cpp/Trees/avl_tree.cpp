@@ -1,18 +1,22 @@
-#include "avl_tree.h"
+//#include "avl_tree.h"
 
-AVLTree::AVLTree() {
+template <typename Comparable>
+AVLTree<Comparable>::AVLTree() {
     root = nullptr;
 }
 
-AVLTree::~AVLTree() {
+template <typename Comparable>
+AVLTree<Comparable>::~AVLTree() {
     makeEmpty();
 }
 
-void AVLTree::makeEmpty() {
+template <typename Comparable>
+void AVLTree<Comparable>::makeEmpty() {
     makeEmpty(root);
 }
 
-void AVLTree::makeEmpty(AVLNode * & t) {
+template <typename Comparable>
+void AVLTree<Comparable>::makeEmpty(AVLNode<Comparable> * & t) {
     if (t != nullptr) {
         makeEmpty(t->left);
         makeEmpty(t->right);
@@ -21,26 +25,31 @@ void AVLTree::makeEmpty(AVLNode * & t) {
     t = nullptr;
 }
 
-AVLTree::AVLTree(const AVLTree & rhs) : root{nullptr} {
+template <typename Comparable>
+AVLTree<Comparable>::AVLTree(const AVLTree<Comparable> & rhs) : root{nullptr} {
     root = clone (rhs.root);
 }
 
-AVLNode * AVLTree::clone(AVLNode *t) const {
+template <typename Comparable>
+AVLNode<Comparable> * AVLTree<Comparable>::clone(AVLNode<Comparable> *t) const {
     if (t == nullptr)
         return nullptr;
     else
-        return new AVLNode{t->element, clone(t->left), clone(t->right)};
+        return new AVLNode<Comparable>{t->element, clone(t->left), clone(t->right)};
 }
 
-bool AVLTree::isEmpty() const {
+template <typename Comparable>
+bool AVLTree<Comparable>::isEmpty() const {
     return (root == nullptr);
 }
 
-bool AVLTree::contains(const int & x) const {
+template <typename Comparable>
+bool AVLTree<Comparable>::contains(const Comparable& x) const {
     return contains(x, root);
 }
 
-bool AVLTree::contains(const int & x, AVLNode *t) const {
+template <typename Comparable>
+bool AVLTree<Comparable>::contains(const Comparable& x, AVLNode<Comparable> *t) const {
     if (t == nullptr)
         return false;
     else if(x < t->element)
@@ -51,25 +60,30 @@ bool AVLTree::contains(const int & x, AVLNode *t) const {
         return true;
 }
 
-int AVLTree::maxHeight() const {
+template <typename Comparable>
+int AVLTree<Comparable>::maxHeight() const {
     return height(root);
 }
 
-int AVLTree::height(AVLNode *t) const {
+template <typename Comparable>
+int AVLTree<Comparable>::height(AVLNode<Comparable> *t) const {
     return (t == nullptr)? -1 : t->height;
 }
 
-void AVLTree::insert(const int & x) {
+template <typename Comparable>
+void AVLTree<Comparable>::insert(const Comparable& x) {
     insert(x, root);
 }
 
-void AVLTree::insert(int && x) {
+template <typename Comparable>
+void AVLTree<Comparable>::insert(Comparable&& x) {
     insert(std::move(x), root);
 }
 
-void AVLTree::insert(const int & x, AVLNode * & t) {
+template <typename Comparable>
+void AVLTree<Comparable>::insert(const Comparable& x, AVLNode<Comparable> * & t) {
     if (t == nullptr)
-        t = new AVLNode{x, nullptr, nullptr};
+        t = new AVLNode<Comparable>{x, nullptr, nullptr};
     else if (x < t->element)
         insert(x, t->left);
     else if (t->element < x)
@@ -78,9 +92,10 @@ void AVLTree::insert(const int & x, AVLNode * & t) {
     balance(t);
 }
 
-void AVLTree::insert(int && x, AVLNode * & t) {
+template <typename Comparable>
+void AVLTree<Comparable>::insert(Comparable&& x, AVLNode<Comparable> * & t) {
     if (t == nullptr)
-        t = new AVLNode{ std::move(x), nullptr, nullptr};
+        t = new AVLNode<Comparable>{ std::move(x), nullptr, nullptr};
     else if (x < t->element)
         insert(std::move(x), t->left);
     else if (t->element < x)
@@ -89,11 +104,13 @@ void AVLTree::insert(int && x, AVLNode * & t) {
     balance(t);
 }
 
-void AVLTree::remove(const int & x) {
+template <typename Comparable>
+void AVLTree<Comparable>::remove(const Comparable& x) {
     remove(x, root);
 }
 
-void AVLTree::remove(const int & x, AVLNode * & t) {
+template <typename Comparable>
+void AVLTree<Comparable>::remove(const Comparable& x, AVLNode<Comparable> * & t) {
     if (t == nullptr)
         return;
     if (x < t->element)
@@ -105,7 +122,7 @@ void AVLTree::remove(const int & x, AVLNode * & t) {
         remove(t->element, t->right);
     }
     else {
-        AVLNode *oldNode = t;
+        AVLNode<Comparable> *oldNode = t;
         t = (t->left != nullptr) ? t->left : t->right;
         delete oldNode;
     }
@@ -113,13 +130,15 @@ void AVLTree::remove(const int & x, AVLNode * & t) {
     balance(t);
 }
 
-void AVLTree::printTree(ostream & out) const {
+template <typename Comparable>
+void AVLTree<Comparable>::printTree(ostream & out) const {
     out << "Printing AVL tree in-order.\n";
     printTree(root, out);
     out << "\n";
 }
 
-void AVLTree::printTree(AVLNode *t, ostream & out) const {
+template <typename Comparable>
+void AVLTree<Comparable>::printTree(AVLNode<Comparable> *t, ostream & out) const {
     if (t == nullptr)
         return;
     else {
@@ -129,7 +148,8 @@ void AVLTree::printTree(AVLNode *t, ostream & out) const {
     }
 }
 
-AVLNode * AVLTree::findMin(AVLNode *t) const {
+template <typename Comparable>
+AVLNode<Comparable> * AVLTree<Comparable>::findMin(AVLNode<Comparable> *t) const {
     if(t==nullptr)
         return nullptr;
     if(t->left == nullptr)
@@ -137,8 +157,9 @@ AVLNode * AVLTree::findMin(AVLNode *t) const {
     return findMin(t->left);
 }
 
-const int & AVLTree::findMin() const {
-    AVLNode * el = findMin(root);
+template <typename Comparable>
+const Comparable& AVLTree<Comparable>::findMin() const {
+    AVLNode<Comparable> * el = findMin(root);
     if (el != nullptr) {
         return el->element;
     } else {
@@ -146,7 +167,8 @@ const int & AVLTree::findMin() const {
     }
 }
 
-AVLNode * AVLTree::findMax(AVLNode *t) const {
+template <typename Comparable>
+AVLNode<Comparable> * AVLTree<Comparable>::findMax(AVLNode<Comparable> *t) const {
     if(t==nullptr)
         return nullptr;
     if(t->right == nullptr)
@@ -154,8 +176,9 @@ AVLNode * AVLTree::findMax(AVLNode *t) const {
     return findMax(t->left);
 }
 
-const int & AVLTree::findMax() const {
-    AVLNode * el = findMax(root);
+template <typename Comparable>
+const Comparable& AVLTree<Comparable>::findMax() const {
+    AVLNode<Comparable> * el = findMax(root);
     if (el != nullptr) {
         return el->element;
     } else {
@@ -163,7 +186,8 @@ const int & AVLTree::findMax() const {
     }
 }
 
-void AVLTree::balance(AVLNode * & t) {
+template <typename Comparable>
+void AVLTree<Comparable>::balance(AVLNode<Comparable> * & t) {
     if (t == nullptr)
         return;
 
@@ -184,8 +208,9 @@ void AVLTree::balance(AVLNode * & t) {
     t->height = max( height(t->left), height(t->right)) + 1;
 }
 
-void AVLTree::rotateWithLeftChild(AVLNode * & k2) {
-    AVLNode *k1 = k2->left;
+template <typename Comparable>
+void AVLTree<Comparable>::rotateWithLeftChild(AVLNode<Comparable> * & k2) {
+    AVLNode<Comparable> *k1 = k2->left;
     k2->left = k1->right;
     k1->right = k2;
     k2->height = max(height(k2->left), height(k2->right)) + 1;
@@ -193,8 +218,9 @@ void AVLTree::rotateWithLeftChild(AVLNode * & k2) {
     k2 = k1;
 }
 
-void AVLTree::rotateWithRightChild(AVLNode * & k2) {
-    AVLNode *k1 = k2->right;
+template <typename Comparable>
+void AVLTree<Comparable>::rotateWithRightChild(AVLNode<Comparable> * & k2) {
+    AVLNode<Comparable> *k1 = k2->right;
     k2->right = k1->left;
     k1->left = k2;
     k2->height = max(height(k2->left), height(k2->right)) + 1;
@@ -202,12 +228,14 @@ void AVLTree::rotateWithRightChild(AVLNode * & k2) {
     k2 = k1;
 }
 
-void AVLTree::doubleWithLeftChild(AVLNode * & k3) {
+template <typename Comparable>
+void AVLTree<Comparable>::doubleWithLeftChild(AVLNode<Comparable> * & k3) {
     rotateWithRightChild(k3->left);
     rotateWithLeftChild(k3);
 }
 
-void AVLTree::doubleWithRightChild(AVLNode * & k3) {
+template <typename Comparable>
+void AVLTree<Comparable>::doubleWithRightChild(AVLNode<Comparable> * & k3) {
     rotateWithLeftChild(k3->right);
     rotateWithRightChild(k3);
 }

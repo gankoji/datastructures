@@ -12,7 +12,7 @@ using namespace std::chrono;
 void doPerfTest() {
     // For fun now, let's really crank it. 
     bst_node * testtree1 = new bst_node();
-    AVLTree * avl1 = new AVLTree();
+    AVLTree<int> * avl1 = new AVLTree<int>();
 
     const int loops = (int)1e6;
     int theIndex = rand()%loops;
@@ -44,6 +44,9 @@ void doPerfTest() {
     long delta = (duration.count() - duration2.count());
     float pDelta = (float)delta/(float)duration.count()*100.;
     printf("Time difference: %ld us, %5.3f%%.\n", delta, pDelta);
+
+    delete avl1;
+    delete testtree1;
 }
 
 int main(int argc, char ** argv) {
@@ -74,7 +77,7 @@ int main(int argc, char ** argv) {
 
     // Test AVL Tree
     printf("\nNow testing AVL trees.\n");
-    AVLTree * avl = new AVLTree();
+    AVLTree<int> * avl = new AVLTree<int>();
     avl->insert(5);
     tests[6] = avl->contains(5);
 

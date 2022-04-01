@@ -11,17 +11,14 @@ TARGET = main
 
 all: trees
 
-trees: main.o bst_node.o avl_tree.o
-	$(CC) $(CFLAGS) -o trees.out main.cpp bst_node.o avl_tree.o
+trees: main.o bst_node.o
+	$(CC) $(CFLAGS) -o trees.out main.cpp bst_node.o
 
 bst_node.o:
 	$(CC) $(CFLAGS) -c bst_node.cpp
 
-avl_tree.o:
-	$(CC) $(CFLAGS) -c avl_tree.cpp
-
 clean:
-	$(RM) trees.out main.o bst_node.o avl_tree.o
+	$(RM) trees.out main.o bst_node.o
 
 test: clean all
 	./trees.out
