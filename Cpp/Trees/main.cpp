@@ -78,7 +78,9 @@ int main(int argc, char ** argv) {
     // Test AVL Tree
     printf("\nNow testing AVL trees.\n");
     AVLTree<int> * avl = new AVLTree<int>();
+    AVLTree<float> * avlf = new AVLTree<float>();
     avl->insert(5);
+    avlf->insert(5.2);
     tests[6] = avl->contains(5);
 
     avl->printTree();

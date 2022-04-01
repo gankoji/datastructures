@@ -11,10 +11,10 @@ struct AVLNode {
     AVLNode *right;
     int height;
 
-    AVLNode( const Comparable & theElement, AVLNode *lt, AVLNode *rt, Comparable h = 0)
+    AVLNode( const Comparable & theElement, AVLNode *lt, AVLNode *rt, int h = 0)
         : element{theElement}, left{lt}, right{rt}, height{h} {}
 
-    AVLNode( Comparable && theElement, AVLNode *lt, AVLNode *rt, Comparable h=0)
+    AVLNode( Comparable && theElement, AVLNode *lt, AVLNode *rt, int h=0)
         : element{std::move(theElement)}, left{lt}, right{rt}, height{h} {}
 };
 
