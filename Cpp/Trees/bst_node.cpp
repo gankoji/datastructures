@@ -1,6 +1,19 @@
 #include "bst_node.h"
 #include <iostream>
 
+int bst_node::maxHeight() {
+    return maxHeight(this);
+}
+
+int bst_node::maxHeight(bst_node * t) {
+    if (t == nullptr) {
+        return -1;
+    }
+
+    int lt = maxHeight(t->left);
+    int rt = maxHeight(t->right);
+    return std::max( lt, rt ) + 1;
+}
 void bst_node::insert(int value) {
     if (value <= data) {
         if (left == nullptr) {

@@ -8,6 +8,8 @@ class bst_node {
         bst_node *left, *right;
         int data;
 
+        int maxHeight();
+        int maxHeight(bst_node * t);
         void insert(int val);
         bool contains(int val);
         void printInOrder();

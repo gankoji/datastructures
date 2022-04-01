@@ -32,6 +32,8 @@ class AVLTree {
         bool contains(const int & x) const;
         bool isEmpty() const;
 
+        int maxHeight() const;
+
         const int & findMin() const;
         const int & findMax() const;
 
@@ -54,7 +56,7 @@ class AVLTree {
 
         bool contains(const int & x, AVLNode *t) const;
 
-        int height(AVLNode * t);
+        int height(AVLNode * t) const;
         AVLNode * findMin( AVLNode *t) const;
         AVLNode * findMax(AVLNode *t) const;
         AVLNode * clone(AVLNode *t) const;

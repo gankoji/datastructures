@@ -51,27 +51,20 @@ bool AVLTree::contains(const int & x, AVLNode *t) const {
         return true;
 }
 
-int AVLTree::height(AVLNode *t) {
+int AVLTree::maxHeight() const {
+    return height(root);
+}
+
+int AVLTree::height(AVLNode *t) const {
     return (t == nullptr)? -1 : t->height;
 }
 
 void AVLTree::insert(const int & x) {
-    cout << "\nTree before insert of " << x << "\n";
-    printTree();
-
     insert(x, root);
-
-    cout << "Tree after insert, with balance.\n";
-    printTree();
 }
 
 void AVLTree::insert(int && x) {
-    cout << "\nTree before insert of " << x << "\n";
-    printTree();
     insert(std::move(x), root);
-
-    cout << "Tree after insert, with balance.\n";
-    printTree();
 }
 
 void AVLTree::insert(const int & x, AVLNode * & t) {
@@ -81,9 +74,6 @@ void AVLTree::insert(const int & x, AVLNode * & t) {
         insert(x, t->left);
     else if (t->element < x)
         insert(x, t->right);
-    else
-        ;
-
 
     balance(t);
 }
@@ -95,8 +85,6 @@ void AVLTree::insert(int && x, AVLNode * & t) {
         insert(std::move(x), t->left);
     else if (t->element < x)
         insert(std::move(x), t->right);
-    else
-        ;
 
     balance(t);
 }
@@ -154,7 +142,7 @@ const int & AVLTree::findMin() const {
     if (el != nullptr) {
         return el->element;
     } else {
-        return -1;
+        return *(new int(-1));
     }
 }
 
@@ -171,7 +159,7 @@ const int & AVLTree::findMax() const {
     if (el != nullptr) {
         return el->element;
     } else {
-        return -1;
+        return *(new int(-1));
     }
 }
 
@@ -180,15 +168,17 @@ void AVLTree::balance(AVLNode * & t) {
         return;
 
     if (height(t->left) - height(t->right) > ALLOWED_IMBALANCE) {
-        if (height(t->left->left) >= height(t->left->right))
+        if (height(t->left->left) >= height(t->left->right)) {
             rotateWithLeftChild(t);
-        else
+        } else {
             doubleWithLeftChild(t);
+        }
     } else if (height(t->right) - height(t->left) > ALLOWED_IMBALANCE) {
-        if (height(t->right->right) >= height(t->right->left))
+        if (height(t->right->right) >= height(t->right->left)) {
             rotateWithRightChild(t);
-        else
+        } else {
             doubleWithRightChild(t);
+        }
     }
 
     t->height = max( height(t->left), height(t->right)) + 1;
@@ -206,7 +196,7 @@ void AVLTree::rotateWithLeftChild(AVLNode * & k2) {
 void AVLTree::rotateWithRightChild(AVLNode * & k2) {
     AVLNode *k1 = k2->right;
     k2->right = k1->left;
-    k1->right = k2;
+    k1->left = k2;
     k2->height = max(height(k2->left), height(k2->right)) + 1;
     k1->height = max(k2->height, height(k1->right)) + 1;
     k2 = k1;
