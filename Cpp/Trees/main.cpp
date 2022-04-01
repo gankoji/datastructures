@@ -108,6 +108,8 @@ int main(int argc, char ** argv) {
         isplay->insert(arr[i]);
         tests[i+13] = isplay->contains(arr[i]);
     }
+    isplay->remove(5);
+    tests[17] = !isplay->contains(5);
 
     printf("Splay tree after insertion tests. \n");
     isplay->printTree();
