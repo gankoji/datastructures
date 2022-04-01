@@ -109,6 +109,10 @@ int main(int argc, char ** argv) {
         tests[i+13] = isplay->contains(arr[i]);
     }
 
+    printf("Splay tree after insertion tests. \n");
+    isplay->printTree();
+    printf("Maximum height of Splay tree: %d\n", isplay->maxHeight());
+
     // Crank up the heat to show differences
     doPerfTest();
 

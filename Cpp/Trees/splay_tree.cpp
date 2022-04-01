@@ -76,7 +76,7 @@ int SplayTree<Comparable>::maxHeight() const {
 
 template <typename Comparable>
 int SplayTree<Comparable>::height(SplayNode<Comparable> *t) const {
-    return (t == nullptr)? -1 : t->height;
+    return (t == nullNode)? -1 : (max(height(t->left), height(t->right)) + 1);
 }
 
 template <typename Comparable>
@@ -137,7 +137,7 @@ void SplayTree<Comparable>::printTree(ostream & out) const {
 
 template <typename Comparable>
 void SplayTree<Comparable>::printTree(SplayNode<Comparable> *t, ostream & out) const {
-    if (t == nullptr)
+    if (t == nullNode)
         return;
     else {
         printTree(t->left, out);
