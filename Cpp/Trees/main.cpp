@@ -1,5 +1,6 @@
 #include "bst_node.h"
 #include "avl_tree.h"
+#include "splay_tree.h"
 #include <numeric>
 #include <iostream>
 #include <stdlib.h>
@@ -7,7 +8,7 @@
 
 using namespace std::chrono;
 
-#define NUM_TESTS 12
+#define NUM_TESTS 18
 
 void doPerfTest() {
     // For fun now, let's really crank it. 
@@ -96,6 +97,17 @@ int main(int argc, char ** argv) {
     printf("Maximum height of AVL tree: %d\n", avl->maxHeight());
 
     delete avl;
+
+    // Test splay tree
+    SplayTree<int> *isplay = new SplayTree<int>();
+    isplay->insert(5);
+
+    tests[12] = isplay->contains(5);
+
+    for (int i=0; i<5; i++) {
+        isplay->insert(arr[i]);
+        tests[i+13] = isplay->contains(arr[i]);
+    }
 
     // Crank up the heat to show differences
     doPerfTest();
