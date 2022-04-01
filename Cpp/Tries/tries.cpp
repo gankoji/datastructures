@@ -41,7 +41,7 @@ void Trie::insert(string key) {
 void Trie::insert(struct TrieNode *root, string key) {
 	struct TrieNode *curr = root;
 	for (int i = 0; i < (int)key.length(); i++) {
-		int index = key[i] - 'A';
+		int index = key[i] - 'A'; // Hacky conversion from char to int
 		if (!curr->child[index])
 			curr->child[index] = createNode();
 		curr = curr->child[index];

@@ -8,6 +8,8 @@ const int ALPHA_SIZE = 26;
 struct TrieNode {
 	struct TrieNode *child[ALPHA_SIZE];
 	bool endofstring; //It is true if node represents end of word.
+    // Object myRecord;
+    // This is where you'd store records associated with 'word' for retrieval. 
 };
 
 class Trie {
