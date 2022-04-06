@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
+#include <set>
 
 /*
  * This code largely from an example implementation found at
@@ -40,6 +42,7 @@ class Graph
         Graph(int);
         void add_edge(int, int);
         void depth_first_search();
+        void breadth_first_search();
 
     private:
         void depth_first_search_visit(int);

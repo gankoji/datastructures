@@ -9,4 +9,11 @@ int main(int argc, char ** argv) {
    grp.add_edge(0, 3);
    grp.depth_first_search();
    std::cout << "\n";
+
+   for (auto& u:grp.vertices) {
+      u.color = grp.WHITE;
+   }
+
+   grp.breadth_first_search();
+   std::cout << "\n";
 }
