@@ -30,7 +30,7 @@ void Graph::breadth_first_search() {
 		std::cout << current->id <<" ";
 
 		// Add all of it's neighbors to the queue
-		auto& v = adjacent[u].head;
+		auto v = adjacent[u].head;
 
 		while(v != nullptr) {
 			// If neighbor hasn't yet been processed ...
@@ -114,7 +114,8 @@ void Graph::dijkstra_single(Vertex * src) {
 
 	while(!q.empty()) {
 		Vertex * n = q.front();
-		std::cout << "Searching for shortest path to " << n->id << std::endl;
+		std::cout << "Searching for shortest path to " << n->id << 
+					 " from " << src->id << std::endl;
 		q.pop();
 
 		known[n->id] = true;
@@ -122,7 +123,7 @@ void Graph::dijkstra_single(Vertex * src) {
 		int minDist = 100;
 		Vertex * nextv = nullptr;
 		
-		auto& v = adjacent[n->id].head;
+		auto v = adjacent[n->id].head;
 		while(v != nullptr) {
 			if (!known[v->dest_id]) {
 				Vertex * ref = &vertices[v->dest_id];
@@ -159,14 +160,12 @@ void Graph::dijkstra_single(Vertex * src) {
 				path[nextv->id] = n->id;
 			}
 
-			printf("Printing path.\n");
 			printPath(n);
 			printf("\n");
 		} else {
 			printf("Nextv is null.\n");
 		}
 	}
-	printPath(&vertices[3]);
 }
 
 void Graph::printPath(Vertex * dest) {
@@ -178,5 +177,7 @@ void Graph::printPath(Vertex * dest) {
 }
 
 void Graph::dijkstra() {
-	dijkstra_single(&vertices[0]);
+	for (int i=0; i<vertex_count; i++) {
+		dijkstra_single(&vertices[i]);
+	}
 }
