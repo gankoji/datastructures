@@ -5,6 +5,7 @@
 #include <vector>
 #include <queue>
 #include <set>
+#include <map>
 
 /*
  * This code largely from an example implementation found at
@@ -27,8 +28,9 @@ class Graph
         struct Adj_list_node
         {
             int dest_id;
+            int cost;
             Adj_list_node * next;
-            Adj_list_node(int _dest_id) : dest_id(_dest_id), next(nullptr) {}
+            Adj_list_node(int _dest_id) : dest_id(_dest_id), cost(1), next(nullptr) {}
         };
 
         struct Adj_list
@@ -43,9 +45,17 @@ class Graph
         void add_edge(int, int);
         void depth_first_search();
         void breadth_first_search();
+        void dijkstra_single(Vertex * src);
+        void dijkstra();
 
     private:
+    	// Secondary data structures to store state
+    	std::map<int, int> dist;
+    	std::map<int, int> path;
+    	std::map<int, bool> known;
+
         void depth_first_search_visit(int);
+        void printPath(Vertex * dest);
 };
 
 #endif //GRAPH

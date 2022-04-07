@@ -7,13 +7,15 @@ int main(int argc, char ** argv) {
    grp.add_edge(2, 3);
    grp.add_edge(2, 1);
    grp.add_edge(0, 3);
-   grp.depth_first_search();
-   std::cout << "\n";
+   //grp.depth_first_search();
+   //std::cout << "\n";
 
-   for (auto& u:grp.vertices) {
-      u.color = grp.WHITE;
-   }
+   //for (auto& u:grp.vertices) {
+   //   u.color = grp.WHITE;
+   //}
 
-   grp.breadth_first_search();
-   std::cout << "\n";
+   //grp.breadth_first_search();
+   //std::cout << "\n";
+
+   grp.dijkstra();
 }
